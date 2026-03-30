@@ -8,6 +8,7 @@ import PricingPage from "@/pages/PricingPage";
 import FeedbackPage from "@/pages/FeedbackPage";
 import HelpPage from "@/pages/HelpPage";
 import NotebookPage from "@/pages/NotebookPage";
+import MemoryPage from "@/pages/MemoryPage";
 import AuthPage from "@/pages/AuthPage";
 import type { Session } from "@supabase/supabase-js";
 
@@ -18,6 +19,7 @@ const pageMap = {
   feedback: FeedbackPage,
   help: HelpPage,
   notebook: NotebookPage,
+  memory: MemoryPage,
 } as const;
 
 const Index = () => {

@@ -11,6 +11,7 @@ const Sidebar = () => {
   const navItems = [
     { key: "settings" as const, icon: Settings, label: "Settings" },
     { key: "pricing" as const, icon: CreditCard, label: "Pricing" },
+    { key: "memory" as const, icon: HardDrive, label: "Memory" },
     { key: "notebook" as const, icon: BookOpen, label: "Notebook LM" },
     { key: "feedback" as const, icon: MessageSquare, label: "Feedback" },
     { key: "help" as const, icon: HelpCircle, label: "Help" },
