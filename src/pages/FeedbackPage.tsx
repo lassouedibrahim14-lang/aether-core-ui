@@ -1,15 +1,16 @@
 import { useState } from "react";
+import { useTranslation } from "@/hooks/use-translation";
 import TopBar from "@/components/TopBar";
 import { Send, Star } from "lucide-react";
 
 const FeedbackPage = () => {
+  const { t } = useTranslation();
   const [feedback, setFeedback] = useState("");
   const [rating, setRating] = useState(0);
   const [submitted, setSubmitted] = useState(false);
 
   const handleSubmit = () => {
     if (!feedback.trim()) return;
-    // In production, this would send to an API
     setSubmitted(true);
     setTimeout(() => {
       setFeedback("");
@@ -20,20 +21,20 @@ const FeedbackPage = () => {
 
   return (
     <div className="flex h-full flex-col">
-      <TopBar title="💬  Send Feedback" />
+      <TopBar title={t("feedback.title")} />
 
-      <div className="flex-1 overflow-y-auto px-6 py-6">
+      <div className="flex-1 overflow-y-auto px-4 sm:px-6 py-6">
         <div className="mx-auto max-w-lg space-y-6">
           {submitted ? (
             <div className="rounded-2xl border border-primary bg-primary/10 p-10 text-center animate-fade-in">
               <div className="text-4xl mb-3">🎉</div>
-              <h3 className="text-xl font-bold text-primary mb-2">Thank you!</h3>
-              <p className="text-sm text-muted-foreground">Your feedback helps us improve Infinity.</p>
+              <h3 className="text-xl font-bold text-primary mb-2">{t("feedback.thanks")}</h3>
+              <p className="text-sm text-muted-foreground">{t("feedback.thanksSub")}</p>
             </div>
           ) : (
             <>
-              <div className="rounded-2xl border border-border bg-card p-7 animate-fade-in">
-                <h3 className="mb-4 text-lg font-bold">Rate your experience</h3>
+              <div className="rounded-2xl border border-border bg-card p-5 sm:p-7 animate-fade-in">
+                <h3 className="mb-4 text-lg font-bold">{t("feedback.rate")}</h3>
                 <div className="flex gap-2 mb-6">
                   {[1, 2, 3, 4, 5].map((star) => (
                     <button
@@ -48,12 +49,12 @@ const FeedbackPage = () => {
                   ))}
                 </div>
 
-                <label className="mb-1.5 block text-xs font-medium text-muted-foreground">Your feedback</label>
+                <label className="mb-1.5 block text-xs font-medium text-muted-foreground">{t("feedback.label")}</label>
                 <textarea
                   value={feedback}
                   onChange={(e) => setFeedback(e.target.value)}
                   rows={5}
-                  placeholder="Tell us what you think about Infinity..."
+                  placeholder={t("feedback.placeholder")}
                   className="w-full rounded-xl border border-border bg-background px-4 py-3 text-sm text-foreground outline-none transition-all focus:border-primary focus:shadow-[0_0_0_2px_hsl(185_100%_50%/0.15)] placeholder:text-muted-foreground resize-none"
                 />
               </div>
@@ -63,7 +64,7 @@ const FeedbackPage = () => {
                 disabled={!feedback.trim()}
                 className="flex w-full items-center justify-center gap-2 rounded-xl bg-gradient-to-r from-primary to-[hsl(190,100%,27%)] py-3 text-sm font-bold text-primary-foreground shadow-[0_0_20px_hsla(185,100%,50%,0.35)] transition-all hover:-translate-y-0.5 disabled:opacity-40"
               >
-                <Send className="h-4 w-4" /> Submit Feedback
+                <Send className="h-4 w-4" /> {t("feedback.submit")}
               </button>
             </>
           )}
