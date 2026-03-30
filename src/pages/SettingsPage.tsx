@@ -1,5 +1,6 @@
 import { useState } from "react";
 import { useInfinityStore, ULTRA_FREE_EMAILS } from "@/store/agnes-store";
+import { useTranslation } from "@/hooks/use-translation";
 import TopBar from "@/components/TopBar";
 import { supabase } from "@/integrations/supabase/client";
 import {
@@ -19,12 +20,12 @@ const SettingsPage = () => {
     theme, setTheme, language, setLanguage,
     savedLinks, addLink, removeLink,
   } = useInfinityStore();
+  const { t } = useTranslation();
 
   const [userEmail, setUserEmail] = useState<string | null>(null);
   const [newLinkTitle, setNewLinkTitle] = useState("");
   const [newLinkUrl, setNewLinkUrl] = useState("");
 
-  // Get current user
   useState(() => {
     supabase.auth.getUser().then(({ data }) => {
       setUserEmail(data.user?.email ?? null);
@@ -47,38 +48,38 @@ const SettingsPage = () => {
     window.location.reload();
   };
 
-  const sectionClass = "rounded-2xl border border-border bg-card p-7 animate-fade-in";
+  const sectionClass = "rounded-2xl border border-border bg-card p-5 sm:p-7 animate-fade-in";
   const labelClass = "mb-1.5 block text-xs font-medium text-muted-foreground";
   const inputClass =
     "w-full rounded-xl border border-border bg-background px-4 py-2.5 text-sm text-foreground outline-none transition-all focus:border-primary focus:shadow-[0_0_0_2px_hsl(185_100%_50%/0.15)]";
 
   return (
     <div className="flex h-full flex-col">
-      <TopBar title="⚙  Infinity Settings" />
+      <TopBar title={t("settings.title")} />
 
-      <div className="flex-1 overflow-y-auto px-6 py-6">
+      <div className="flex-1 overflow-y-auto px-4 sm:px-6 py-6">
         <div className="mx-auto max-w-2xl space-y-6">
           {/* Account */}
           <section className={sectionClass}>
             <h3 className="mb-4 text-lg font-bold flex items-center gap-2">
-              <User className="h-5 w-5 text-primary" /> Account
+              <User className="h-5 w-5 text-primary" /> {t("settings.account")}
             </h3>
             {userEmail ? (
               <div className="space-y-3">
                 <p className="text-sm text-muted-foreground">
-                  Signed in as <span className="font-semibold text-foreground">{userEmail}</span>
+                  {t("settings.signedAs")} <span className="font-semibold text-foreground">{userEmail}</span>
                 </p>
                 {isUltraUser && (
                   <div className="inline-flex items-center gap-2 rounded-full bg-primary/10 px-4 py-1.5 text-xs font-bold text-primary">
-                    ⚡ Ultra Plan — Free Forever
+                    {t("settings.ultraPlan")}
                   </div>
                 )}
                 <button onClick={handleSignOut} className="flex items-center gap-2 text-sm text-destructive hover:underline">
-                  <LogOut className="h-3.5 w-3.5" /> Sign Out
+                  <LogOut className="h-3.5 w-3.5" /> {t("settings.signOut")}
                 </button>
               </div>
             ) : (
-              <p className="text-sm text-muted-foreground">Not signed in.</p>
+              <p className="text-sm text-muted-foreground">{t("settings.notSignedIn")}</p>
             )}
           </section>
 
@@ -86,7 +87,7 @@ const SettingsPage = () => {
           <section className={sectionClass}>
             <h3 className="mb-4 text-lg font-bold flex items-center gap-2">
               {theme === "dark" ? <Moon className="h-5 w-5 text-primary" /> : <Sun className="h-5 w-5 text-primary" />}
-              Appearance
+              {t("settings.appearance")}
             </h3>
             <div className="flex gap-3">
               <button
@@ -97,7 +98,7 @@ const SettingsPage = () => {
                     : "border-border text-muted-foreground hover:border-primary/50"
                 }`}
               >
-                <Moon className="mx-auto mb-2 h-5 w-5" /> Dark
+                <Moon className="mx-auto mb-2 h-5 w-5" /> {t("settings.dark")}
               </button>
               <button
                 onClick={() => setTheme("light")}
@@ -107,7 +108,7 @@ const SettingsPage = () => {
                     : "border-border text-muted-foreground hover:border-primary/50"
                 }`}
               >
-                <Sun className="mx-auto mb-2 h-5 w-5" /> Light
+                <Sun className="mx-auto mb-2 h-5 w-5" /> {t("settings.light")}
               </button>
             </div>
           </section>
@@ -115,7 +116,7 @@ const SettingsPage = () => {
           {/* Language */}
           <section className={sectionClass}>
             <h3 className="mb-4 text-lg font-bold flex items-center gap-2">
-              <Globe className="h-5 w-5 text-primary" /> Language
+              <Globe className="h-5 w-5 text-primary" /> {t("settings.language")}
             </h3>
             <div className="grid grid-cols-2 gap-2">
               {LANGUAGES.map((lang) => (
@@ -136,16 +137,16 @@ const SettingsPage = () => {
 
           {/* API Configuration */}
           <section className={sectionClass}>
-            <h3 className="mb-5 text-lg font-bold">🔗 API Configuration</h3>
-            <label className={labelClass}>Local Unsloth API URL</label>
+            <h3 className="mb-5 text-lg font-bold">{t("settings.apiConfig")}</h3>
+            <label className={labelClass}>{t("settings.apiUrl")}</label>
             <input value={apiUrl} onChange={(e) => setApiUrl(e.target.value)} className={`${inputClass} mb-5`} />
 
-            <label className={labelClass}>Model</label>
+            <label className={labelClass}>{t("settings.model")}</label>
             <select value={model} onChange={(e) => setModel(e.target.value)} className={`${inputClass} mb-5`}>
               {models.map((m) => <option key={m} value={m}>{m}</option>)}
             </select>
 
-            <label className={labelClass}>Temperature: {temperature.toFixed(2)}</label>
+            <label className={labelClass}>{t("settings.temperature")}: {temperature.toFixed(2)}</label>
             <input
               type="range" min={0} max={2} step={0.05}
               value={temperature}
@@ -157,27 +158,27 @@ const SettingsPage = () => {
           {/* Saved Links */}
           <section className={sectionClass}>
             <h3 className="mb-4 text-lg font-bold flex items-center gap-2">
-              <Link2 className="h-5 w-5 text-primary" /> Saved Links
+              <Link2 className="h-5 w-5 text-primary" /> {t("settings.savedLinks")}
             </h3>
             <div className="space-y-2 mb-4">
               {savedLinks.length === 0 && (
-                <p className="text-sm text-muted-foreground">No links saved yet.</p>
+                <p className="text-sm text-muted-foreground">{t("settings.noLinks")}</p>
               )}
               {savedLinks.map((link, i) => (
                 <div key={i} className="flex items-center justify-between rounded-xl border border-border px-4 py-2.5">
                   <a href={link.url} target="_blank" rel="noopener noreferrer" className="text-sm text-primary hover:underline truncate">
                     {link.title}
                   </a>
-                  <button onClick={() => removeLink(i)} className="text-destructive hover:text-destructive/80">
+                  <button onClick={() => removeLink(i)} className="text-destructive hover:text-destructive/80 shrink-0">
                     <Trash2 className="h-3.5 w-3.5" />
                   </button>
                 </div>
               ))}
             </div>
-            <div className="flex gap-2">
-              <input placeholder="Title" value={newLinkTitle} onChange={(e) => setNewLinkTitle(e.target.value)} className={`${inputClass} flex-1`} />
-              <input placeholder="URL" value={newLinkUrl} onChange={(e) => setNewLinkUrl(e.target.value)} className={`${inputClass} flex-1`} />
-              <button onClick={handleAddLink} className="flex items-center justify-center rounded-xl bg-primary px-3 text-primary-foreground hover:shadow-[0_0_15px_hsla(185,100%,50%,0.3)]">
+            <div className="flex flex-col sm:flex-row gap-2">
+              <input placeholder={t("settings.linkTitle")} value={newLinkTitle} onChange={(e) => setNewLinkTitle(e.target.value)} className={`${inputClass} flex-1`} />
+              <input placeholder={t("settings.linkUrl")} value={newLinkUrl} onChange={(e) => setNewLinkUrl(e.target.value)} className={`${inputClass} flex-1`} />
+              <button onClick={handleAddLink} className="flex items-center justify-center rounded-xl bg-primary px-3 py-2.5 sm:py-0 text-primary-foreground hover:shadow-[0_0_15px_hsla(185,100%,50%,0.3)]">
                 <Plus className="h-4 w-4" />
               </button>
             </div>

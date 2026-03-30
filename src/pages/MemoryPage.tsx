@@ -1,6 +1,7 @@
 import { useState, useRef } from "react";
+import { useTranslation } from "@/hooks/use-translation";
 import TopBar from "@/components/TopBar";
-import { Upload, File, Trash2, X } from "lucide-react";
+import { Upload, File, X } from "lucide-react";
 
 interface UploadedFile {
   name: string;
@@ -10,6 +11,7 @@ interface UploadedFile {
 }
 
 const MemoryPage = () => {
+  const { t } = useTranslation();
   const [files, setFiles] = useState<UploadedFile[]>([]);
   const [dragActive, setDragActive] = useState(false);
   const inputRef = useRef<HTMLInputElement>(null);
@@ -42,37 +44,31 @@ const MemoryPage = () => {
 
   return (
     <div className="flex h-full flex-col">
-      <TopBar title="📁  Memory — File Upload" />
+      <TopBar title={t("memory.title")} />
 
-      <div className="flex-1 overflow-y-auto px-6 py-6">
+      <div className="flex-1 overflow-y-auto px-4 sm:px-6 py-6">
         <div className="mx-auto max-w-2xl space-y-6">
-          {/* Drop zone */}
           <div
             onDragOver={(e) => { e.preventDefault(); setDragActive(true); }}
             onDragLeave={() => setDragActive(false)}
             onDrop={handleDrop}
             onClick={() => inputRef.current?.click()}
-            className={`flex cursor-pointer flex-col items-center justify-center rounded-2xl border-2 border-dashed p-12 transition-all animate-fade-in ${
+            className={`flex cursor-pointer flex-col items-center justify-center rounded-2xl border-2 border-dashed p-8 sm:p-12 transition-all animate-fade-in ${
               dragActive
                 ? "border-primary bg-primary/5"
                 : "border-border hover:border-primary/50"
             }`}
           >
             <Upload className={`h-10 w-10 mb-3 ${dragActive ? "text-primary" : "text-muted-foreground"}`} />
-            <p className="text-sm font-medium text-foreground mb-1">
-              Drop files here or click to upload
-            </p>
-            <p className="text-xs text-muted-foreground">
-              Supports any file type
-            </p>
+            <p className="text-sm font-medium text-foreground mb-1">{t("memory.drop")}</p>
+            <p className="text-xs text-muted-foreground">{t("memory.supports")}</p>
             <input ref={inputRef} type="file" multiple className="hidden" onChange={(e) => e.target.files && handleFiles(e.target.files)} />
           </div>
 
-          {/* File list */}
           {files.length > 0 && (
             <div className="rounded-2xl border border-border bg-card p-5 animate-fade-in">
               <h3 className="mb-4 text-sm font-semibold text-foreground">
-                Uploaded Files ({files.length})
+                {t("memory.uploaded")} ({files.length})
               </h3>
               <div className="space-y-2">
                 {files.map((file, i) => (

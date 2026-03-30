@@ -13,6 +13,11 @@ interface InfinityState {
   page: "chat" | "settings" | "pricing" | "help" | "feedback" | "notebook" | "memory";
   setPage: (page: InfinityState["page"]) => void;
 
+  /* Sidebar */
+  sidebarOpen: boolean;
+  setSidebarOpen: (open: boolean) => void;
+  toggleSidebar: () => void;
+
   /* Theme */
   theme: "dark" | "light";
   setTheme: (theme: "dark" | "light") => void;
@@ -57,6 +62,10 @@ export const useInfinityStore = create<InfinityState>()(
     (set, get) => ({
       page: "chat",
       setPage: (page) => set({ page }),
+
+      sidebarOpen: true,
+      setSidebarOpen: (sidebarOpen) => set({ sidebarOpen }),
+      toggleSidebar: () => set((s) => ({ sidebarOpen: !s.sidebarOpen })),
 
       theme: "dark",
       setTheme: (theme) => {

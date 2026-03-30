@@ -1,6 +1,7 @@
 import { useState, useEffect } from "react";
 import { supabase } from "@/integrations/supabase/client";
 import { useInfinityStore } from "@/store/agnes-store";
+import { useIsMobile } from "@/hooks/use-mobile";
 import Sidebar from "@/components/Sidebar";
 import ChatPage from "@/pages/ChatPage";
 import SettingsPage from "@/pages/SettingsPage";
@@ -25,10 +26,16 @@ const pageMap = {
 const Index = () => {
   const [session, setSession] = useState<Session | null>(null);
   const [loading, setLoading] = useState(true);
-  const { page, theme } = useInfinityStore();
+  const { page, theme, language, setSidebarOpen } = useInfinityStore();
+  const isMobile = useIsMobile();
 
+  // Close sidebar on mobile by default
   useEffect(() => {
-    // Apply theme on mount
+    if (isMobile) setSidebarOpen(false);
+  }, [isMobile, setSidebarOpen]);
+
+  // Apply theme
+  useEffect(() => {
     if (theme === "dark") {
       document.documentElement.classList.add("dark");
       document.documentElement.classList.remove("light");
@@ -37,6 +44,11 @@ const Index = () => {
       document.documentElement.classList.add("light");
     }
   }, [theme]);
+
+  // Apply RTL direction
+  useEffect(() => {
+    document.documentElement.dir = language === "ar" ? "rtl" : "ltr";
+  }, [language]);
 
   useEffect(() => {
     const { data: { subscription } } = supabase.auth.onAuthStateChange(
