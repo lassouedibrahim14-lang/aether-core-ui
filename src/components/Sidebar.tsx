@@ -1,18 +1,29 @@
-import { useAgnesStore } from "@/store/agnes-store";
-import { Plus, Settings, CreditCard, Diamond } from "lucide-react";
+import { useInfinityStore } from "@/store/agnes-store";
+import {
+  Plus, Settings, CreditCard, Diamond, HelpCircle, MessageSquare, BookOpen,
+} from "lucide-react";
 
-/** Sidebar navigation — chat list + system links */
+/** Sidebar navigation */
 const Sidebar = () => {
-  const { chats, activeChat, setActiveChat, createChat, setPage } = useAgnesStore();
+  const { chats, activeChat, setActiveChat, createChat, setPage, page } =
+    useInfinityStore();
+
+  const navItems = [
+    { key: "settings" as const, icon: Settings, label: "Settings" },
+    { key: "pricing" as const, icon: CreditCard, label: "Pricing" },
+    { key: "notebook" as const, icon: BookOpen, label: "Notebook LM" },
+    { key: "feedback" as const, icon: MessageSquare, label: "Feedback" },
+    { key: "help" as const, icon: HelpCircle, label: "Help" },
+  ];
 
   return (
     <aside className="flex h-screen w-72 flex-col border-r border-border bg-card">
       {/* Logo */}
       <div className="px-5 pt-6 pb-2">
         <h1 className="text-xl font-extrabold tracking-tight">
-          🔮 Agnes<span className="text-primary">AI</span>
+          ♾️ <span className="text-primary">Infinity</span>
         </h1>
-        <p className="mt-1 text-xs text-muted-foreground">Aether OS v1.0</p>
+        <p className="mt-1 text-xs text-muted-foreground">Powered by Vixon AI</p>
       </div>
 
       {/* New Chat */}
@@ -26,13 +37,13 @@ const Sidebar = () => {
         </button>
       </div>
 
-      {/* Gems (chat list) */}
+      {/* Gems */}
       <div className="flex-1 overflow-y-auto px-2">
         <p className="mb-2 px-4 pt-4 text-[0.65rem] font-semibold uppercase tracking-widest text-muted-foreground">
           Gems
         </p>
         {Object.keys(chats).map((name) => {
-          const isActive = name === activeChat;
+          const isActive = name === activeChat && page === "chat";
           return (
             <button
               key={name}
@@ -51,24 +62,23 @@ const Sidebar = () => {
       </div>
 
       {/* System Nav */}
-      <div className="border-t border-border px-2 pb-4 pt-3">
+      <div className="border-t border-border px-2 pb-4 pt-3 space-y-0.5">
         <p className="mb-2 px-4 text-[0.65rem] font-semibold uppercase tracking-widest text-muted-foreground">
           System
         </p>
-        <div className="grid grid-cols-2 gap-1.5">
+        {navItems.map((item) => (
           <button
-            onClick={() => setPage("settings")}
-            className="flex items-center gap-2 rounded-xl px-3 py-2 text-xs font-medium text-muted-foreground transition-all hover:bg-muted/40 hover:text-foreground"
+            key={item.key}
+            onClick={() => setPage(item.key)}
+            className={`flex w-full items-center gap-2 rounded-xl px-3 py-2 text-xs font-medium transition-all ${
+              page === item.key
+                ? "bg-accent-dim text-primary"
+                : "text-muted-foreground hover:bg-muted/40 hover:text-foreground"
+            }`}
           >
-            <Settings className="h-3.5 w-3.5" /> Settings
+            <item.icon className="h-3.5 w-3.5" /> {item.label}
           </button>
-          <button
-            onClick={() => setPage("pricing")}
-            className="flex items-center gap-2 rounded-xl px-3 py-2 text-xs font-medium text-muted-foreground transition-all hover:bg-muted/40 hover:text-foreground"
-          >
-            <CreditCard className="h-3.5 w-3.5" /> Pricing
-          </button>
-        </div>
+        ))}
       </div>
     </aside>
   );

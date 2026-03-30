@@ -5,7 +5,9 @@
 @tailwind utilities;
 
 @layer base {
-  :root {
+  /* Dark theme (default) */
+  :root,
+  .dark {
     --background: 16 18% 8%;
     --foreground: 240 5% 96%;
 
@@ -45,11 +47,51 @@
     --sidebar-border: 0 0% 100% / 0.06;
     --sidebar-ring: 185 100% 50%;
 
-    /* Custom tokens */
     --accent-dim: 185 100% 50% / 0.15;
-    --accent-glow: 0 0 20px hsla(185, 100%, 50%, 0.35), 0 0 60px hsla(185, 100%, 50%, 0.10);
-    --gradient-accent: linear-gradient(135deg, hsl(185 100% 50%) 0%, hsl(190 100% 27%) 100%);
-    --gradient-user-bubble: linear-gradient(135deg, hsl(217 33% 17%), hsl(222 47% 11%));
+  }
+
+  /* Light theme */
+  .light {
+    --background: 0 0% 98%;
+    --foreground: 222 47% 11%;
+
+    --card: 0 0% 100%;
+    --card-foreground: 222 47% 11%;
+
+    --popover: 0 0% 100%;
+    --popover-foreground: 222 47% 11%;
+
+    --primary: 185 100% 35%;
+    --primary-foreground: 0 0% 100%;
+
+    --secondary: 210 40% 96%;
+    --secondary-foreground: 222 47% 11%;
+
+    --muted: 210 40% 96%;
+    --muted-foreground: 215 16% 47%;
+
+    --accent: 185 100% 35%;
+    --accent-foreground: 0 0% 100%;
+
+    --destructive: 0 84% 60%;
+    --destructive-foreground: 0 0% 100%;
+
+    --border: 214 32% 91%;
+    --input: 214 32% 91%;
+    --ring: 185 100% 35%;
+
+    --radius: 0.75rem;
+
+    --sidebar-background: 0 0% 100%;
+    --sidebar-foreground: 222 47% 11%;
+    --sidebar-primary: 185 100% 35%;
+    --sidebar-primary-foreground: 0 0% 100%;
+    --sidebar-accent: 185 100% 35% / 0.1;
+    --sidebar-accent-foreground: 185 100% 35%;
+    --sidebar-border: 214 32% 91%;
+    --sidebar-ring: 185 100% 35%;
+
+    --accent-dim: 185 100% 35% / 0.1;
   }
 }
 
@@ -64,7 +106,6 @@
   }
 }
 
-/* Scrollbar */
 ::-webkit-scrollbar {
   width: 6px;
 }

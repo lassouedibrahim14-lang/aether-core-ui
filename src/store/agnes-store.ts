@@ -1,4 +1,5 @@
 import { create } from "zustand";
+import { persist } from "zustand/middleware";
 
 /** Represents a single chat message */
 export interface ChatMessage {
@@ -6,11 +7,19 @@ export interface ChatMessage {
   content: string;
 }
 
-/** Global application state for Agnes AI */
-interface AgnesState {
+/** Global application state for Vixon AI / Infinity */
+interface InfinityState {
   /* Navigation */
-  page: "chat" | "settings" | "pricing";
-  setPage: (page: AgnesState["page"]) => void;
+  page: "chat" | "settings" | "pricing" | "help" | "feedback" | "notebook";
+  setPage: (page: InfinityState["page"]) => void;
+
+  /* Theme */
+  theme: "dark" | "light";
+  setTheme: (theme: "dark" | "light") => void;
+
+  /* Language */
+  language: "en" | "ar" | "fr" | "es";
+  setLanguage: (lang: InfinityState["language"]) => void;
 
   /* Chat management */
   chats: Record<string, ChatMessage[]>;
@@ -30,43 +39,92 @@ interface AgnesState {
   /* Promo */
   promoApplied: boolean;
   applyPromo: (code: string) => void;
+
+  /* Links */
+  savedLinks: { title: string; url: string }[];
+  addLink: (title: string, url: string) => void;
+  removeLink: (index: number) => void;
 }
 
-export const useAgnesStore = create<AgnesState>((set, get) => ({
-  page: "chat",
-  setPage: (page) => set({ page }),
+/** Emails that get free Ultra access */
+export const ULTRA_FREE_EMAILS = [
+  "lassouedibrahim14@gmail.com",
+  "hammabosch@gmail.com",
+];
 
-  chats: { General: [] },
-  activeChat: "General",
-  setActiveChat: (name) => set({ activeChat: name, page: "chat" }),
-  createChat: () => {
-    const { chats } = get();
-    const name = `Chat ${Object.keys(chats).length + 1}`;
-    set({
-      chats: { ...chats, [name]: [] },
-      activeChat: name,
+export const useInfinityStore = create<InfinityState>()(
+  persist(
+    (set, get) => ({
       page: "chat",
-    });
-  },
-  sendMessage: (content) => {
-    const { chats, activeChat, model } = get();
-    const messages = [...(chats[activeChat] || [])];
-    messages.push({ role: "user", content });
-    // Simulated AI response
-    messages.push({
-      role: "assistant",
-      content: `Thank you for your message. As Agnes AI (model: ${model}), I'm currently running in demo mode. Your prompt was: "${content}"`,
-    });
-    set({ chats: { ...chats, [activeChat]: messages } });
-  },
+      setPage: (page) => set({ page }),
 
-  apiUrl: "http://localhost:8000/v1",
-  setApiUrl: (apiUrl) => set({ apiUrl }),
-  model: "DeepSeek-coder-7B",
-  setModel: (model) => set({ model }),
-  temperature: 0.7,
-  setTemperature: (temperature) => set({ temperature }),
+      theme: "dark",
+      setTheme: (theme) => {
+        if (theme === "dark") {
+          document.documentElement.classList.add("dark");
+          document.documentElement.classList.remove("light");
+        } else {
+          document.documentElement.classList.remove("dark");
+          document.documentElement.classList.add("light");
+        }
+        set({ theme });
+      },
 
-  promoApplied: false,
-  applyPromo: (code) => set({ promoApplied: code.trim().toUpperCase() === "VITCHI14" }),
-}));
+      language: "en",
+      setLanguage: (language) => set({ language }),
+
+      chats: { General: [] },
+      activeChat: "General",
+      setActiveChat: (name) => set({ activeChat: name, page: "chat" }),
+      createChat: () => {
+        const { chats } = get();
+        const name = `Chat ${Object.keys(chats).length + 1}`;
+        set({
+          chats: { ...chats, [name]: [] },
+          activeChat: name,
+          page: "chat",
+        });
+      },
+      sendMessage: (content) => {
+        const { chats, activeChat, model } = get();
+        const messages = [...(chats[activeChat] || [])];
+        messages.push({ role: "user", content });
+        messages.push({
+          role: "assistant",
+          content: `Thank you for your message. As Vixon AI (model: ${model}), I'm currently running in demo mode. Your prompt was: "${content}"`,
+        });
+        set({ chats: { ...chats, [activeChat]: messages } });
+      },
+
+      apiUrl: "http://localhost:8000/v1",
+      setApiUrl: (apiUrl) => set({ apiUrl }),
+      model: "DeepSeek-coder-7B",
+      setModel: (model) => set({ model }),
+      temperature: 0.7,
+      setTemperature: (temperature) => set({ temperature }),
+
+      promoApplied: false,
+      applyPromo: (code) =>
+        set({ promoApplied: code.trim().toUpperCase() === "VITCHI14" }),
+
+      savedLinks: [],
+      addLink: (title, url) =>
+        set((s) => ({ savedLinks: [...s.savedLinks, { title, url }] })),
+      removeLink: (index) =>
+        set((s) => ({
+          savedLinks: s.savedLinks.filter((_, i) => i !== index),
+        })),
+    }),
+    {
+      name: "infinity-store",
+      partialize: (state) => ({
+        theme: state.theme,
+        language: state.language,
+        savedLinks: state.savedLinks,
+        apiUrl: state.apiUrl,
+        model: state.model,
+        temperature: state.temperature,
+      }),
+    }
+  )
+);
