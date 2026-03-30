@@ -1,6 +1,6 @@
 import { useInfinityStore } from "@/store/agnes-store";
 import {
-  Plus, Settings, CreditCard, Diamond, HelpCircle, MessageSquare, BookOpen,
+  Plus, Settings, CreditCard, Diamond, HelpCircle, MessageSquare, BookOpen, HardDrive,
 } from "lucide-react";
 
 /** Sidebar navigation */

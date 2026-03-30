@@ -10,7 +10,7 @@ export interface ChatMessage {
 /** Global application state for Vixon AI / Infinity */
 interface InfinityState {
   /* Navigation */
-  page: "chat" | "settings" | "pricing" | "help" | "feedback" | "notebook";
+  page: "chat" | "settings" | "pricing" | "help" | "feedback" | "notebook" | "memory";
   setPage: (page: InfinityState["page"]) => void;
 
   /* Theme */
