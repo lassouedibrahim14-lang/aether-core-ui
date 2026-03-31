@@ -115,6 +115,7 @@ export const translations: Record<Language, Record<string, string>> = {
     "sidebar.notebook": "دفتر الملاحظات",
     "sidebar.feedback": "ملاحظات",
     "sidebar.help": "المساعدة",
+    "sidebar.aiImages": "صور AI",
     "sidebar.developedBy": "طوّره إبراهيم",
 
     "chat.welcome": "مرحبًا بك في Vixon",
