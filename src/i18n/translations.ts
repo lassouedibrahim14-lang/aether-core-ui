@@ -403,5 +403,11 @@ export const translations: Record<Language, Record<string, string>> = {
     "auth.googleSignIn": "Iniciar sesión con Google",
     "auth.noAccount": "¿No tienes cuenta?",
     "auth.hasAccount": "¿Ya tienes cuenta?",
+
+    "aiImages.title": "🎨  Estudio de imágenes AI",
+    "aiImages.createTitle": "Crear con IA",
+    "aiImages.placeholder": "Describe la imagen que quieres crear…",
+    "aiImages.generating": "✨ Generando tu imagen…",
+    "aiImages.empty": "Tus imágenes generadas aparecerán aquí.",
   },
 };
