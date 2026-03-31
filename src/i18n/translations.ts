@@ -301,6 +301,12 @@ export const translations: Record<Language, Record<string, string>> = {
     "auth.googleSignIn": "Se connecter avec Google",
     "auth.noAccount": "Pas de compte ?",
     "auth.hasAccount": "Déjà un compte ?",
+
+    "aiImages.title": "🎨  Studio d'images AI",
+    "aiImages.createTitle": "Créer avec l'IA",
+    "aiImages.placeholder": "Décrivez l'image que vous souhaitez créer…",
+    "aiImages.generating": "✨ Génération de votre image…",
+    "aiImages.empty": "Vos images générées apparaîtront ici.",
   },
 
   es: {
