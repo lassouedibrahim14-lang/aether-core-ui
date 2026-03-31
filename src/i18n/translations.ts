@@ -199,6 +199,12 @@ export const translations: Record<Language, Record<string, string>> = {
     "auth.googleSignIn": "تسجيل الدخول بـ Google",
     "auth.noAccount": "ليس لديك حساب؟",
     "auth.hasAccount": "لديك حساب بالفعل؟",
+
+    "aiImages.title": "🎨  استوديو صور AI",
+    "aiImages.createTitle": "أنشئ بالذكاء الاصطناعي",
+    "aiImages.placeholder": "صف الصورة التي تريد إنشاءها…",
+    "aiImages.generating": "✨ جارٍ إنشاء صورتك…",
+    "aiImages.empty": "ستظهر صورك المُنشأة هنا.",
   },
 
   fr: {
