@@ -2,7 +2,7 @@ import { useInfinityStore } from "@/store/agnes-store";
 import { useTranslation } from "@/hooks/use-translation";
 import { useIsMobile } from "@/hooks/use-mobile";
 import {
-  Plus, Settings, CreditCard, Diamond, HelpCircle, MessageSquare, BookOpen, HardDrive, X,
+  Plus, Settings, CreditCard, Diamond, HelpCircle, MessageSquare, BookOpen, HardDrive, X, ImagePlus,
 } from "lucide-react";
 
 const Sidebar = () => {
