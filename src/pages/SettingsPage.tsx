@@ -1,8 +1,9 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { useInfinityStore, ULTRA_FREE_EMAILS } from "@/store/agnes-store";
 import { useTranslation } from "@/hooks/use-translation";
 import TopBar from "@/components/TopBar";
 import { supabase } from "@/integrations/supabase/client";
+import { Avatar, AvatarImage, AvatarFallback } from "@/components/ui/avatar";
 import {
   Sun, Moon, Globe, Link2, Plus, Trash2, LogOut, User,
 } from "lucide-react";
@@ -16,24 +17,33 @@ const LANGUAGES = [
 
 const SettingsPage = () => {
   const {
-    apiUrl, setApiUrl, model, setModel, temperature, setTemperature,
     theme, setTheme, language, setLanguage,
     savedLinks, addLink, removeLink,
   } = useInfinityStore();
   const { t } = useTranslation();
 
   const [userEmail, setUserEmail] = useState<string | null>(null);
+  const [userName, setUserName] = useState<string | null>(null);
+  const [userAvatar, setUserAvatar] = useState<string | null>(null);
   const [newLinkTitle, setNewLinkTitle] = useState("");
   const [newLinkUrl, setNewLinkUrl] = useState("");
 
-  useState(() => {
+  useEffect(() => {
     supabase.auth.getUser().then(({ data }) => {
-      setUserEmail(data.user?.email ?? null);
+      const user = data.user;
+      if (!user) return;
+      setUserEmail(user.email ?? null);
+      const meta = user.user_metadata;
+      setUserName(meta?.full_name ?? meta?.name ?? user.email?.split("@")[0] ?? null);
+      setUserAvatar(meta?.avatar_url ?? meta?.picture ?? null);
     });
-  });
+  }, []);
 
   const isUltraUser = userEmail ? ULTRA_FREE_EMAILS.includes(userEmail) : false;
-  const models = ["DeepSeek-coder-7B", "Agnes-Large-1B"];
+
+  const initials = userName
+    ? userName.split(" ").map((w: string) => w[0]).join("").toUpperCase().slice(0, 2)
+    : "V";
 
   const handleAddLink = () => {
     if (newLinkTitle.trim() && newLinkUrl.trim()) {
@@ -49,7 +59,6 @@ const SettingsPage = () => {
   };
 
   const sectionClass = "rounded-2xl border border-border bg-card p-5 sm:p-7 animate-fade-in";
-  const labelClass = "mb-1.5 block text-xs font-medium text-muted-foreground";
   const inputClass =
     "w-full rounded-xl border border-border bg-background px-4 py-2.5 text-sm text-foreground outline-none transition-all focus:border-primary focus:shadow-[0_0_0_2px_hsl(185_100%_50%/0.15)]";
 
@@ -59,16 +68,25 @@ const SettingsPage = () => {
 
       <div className="flex-1 overflow-y-auto px-4 sm:px-6 py-6">
         <div className="mx-auto max-w-2xl space-y-6">
-          {/* Account */}
+          {/* Account — shows avatar, name, email */}
           <section className={sectionClass}>
             <h3 className="mb-4 text-lg font-bold flex items-center gap-2">
               <User className="h-5 w-5 text-primary" /> {t("settings.account")}
             </h3>
             {userEmail ? (
-              <div className="space-y-3">
-                <p className="text-sm text-muted-foreground">
-                  {t("settings.signedAs")} <span className="font-semibold text-foreground">{userEmail}</span>
-                </p>
+              <div className="space-y-4">
+                <div className="flex items-center gap-4">
+                  <Avatar className="h-14 w-14">
+                    {userAvatar ? <AvatarImage src={userAvatar} alt={userName ?? "User"} /> : null}
+                    <AvatarFallback className="bg-gradient-to-br from-primary to-[hsl(190,100%,27%)] text-lg font-bold text-primary-foreground">
+                      {initials}
+                    </AvatarFallback>
+                  </Avatar>
+                  <div>
+                    <p className="text-base font-semibold text-foreground">{userName}</p>
+                    <p className="text-sm text-muted-foreground">{userEmail}</p>
+                  </div>
+                </div>
                 {isUltraUser && (
                   <div className="inline-flex items-center gap-2 rounded-full bg-primary/10 px-4 py-1.5 text-xs font-bold text-primary">
                     {t("settings.ultraPlan")}
@@ -133,26 +151,6 @@ const SettingsPage = () => {
                 </button>
               ))}
             </div>
-          </section>
-
-          {/* API Configuration */}
-          <section className={sectionClass}>
-            <h3 className="mb-5 text-lg font-bold">{t("settings.apiConfig")}</h3>
-            <label className={labelClass}>{t("settings.apiUrl")}</label>
-            <input value={apiUrl} onChange={(e) => setApiUrl(e.target.value)} className={`${inputClass} mb-5`} />
-
-            <label className={labelClass}>{t("settings.model")}</label>
-            <select value={model} onChange={(e) => setModel(e.target.value)} className={`${inputClass} mb-5`}>
-              {models.map((m) => <option key={m} value={m}>{m}</option>)}
-            </select>
-
-            <label className={labelClass}>{t("settings.temperature")}: {temperature.toFixed(2)}</label>
-            <input
-              type="range" min={0} max={2} step={0.05}
-              value={temperature}
-              onChange={(e) => setTemperature(parseFloat(e.target.value))}
-              className="w-full accent-primary"
-            />
           </section>
 
           {/* Saved Links */}

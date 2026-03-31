@@ -51,12 +51,14 @@ const AuthPage = () => {
   return (
     <div className="flex min-h-screen items-center justify-center bg-background px-4">
       <div className="w-full max-w-md space-y-8 animate-fade-in">
-        {/* Logo */}
+        {/* Logo — Vixon */}
         <div className="text-center">
-          <h1 className="text-4xl font-extrabold tracking-tight mb-2">
-            ♾️ <span className="text-primary">Infinity</span>
+          <h1 className="text-4xl font-extrabold tracking-tight mb-1">
+            ♾️ <span className="text-primary">Vixon</span>
           </h1>
-          <p className="text-sm text-muted-foreground">Powered by Vixon AI</p>
+          <p className="text-[0.7rem] font-light text-muted-foreground tracking-wide">
+            developed by Ibrahim
+          </p>
         </div>
 
         {/* Card */}

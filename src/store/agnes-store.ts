@@ -7,7 +7,7 @@ export interface ChatMessage {
   content: string;
 }
 
-/** Global application state for Vixon AI / Infinity */
+/** Global application state for Vixon */
 interface InfinityState {
   /* Navigation */
   page: "chat" | "settings" | "pricing" | "help" | "feedback" | "notebook" | "memory";
@@ -32,14 +32,6 @@ interface InfinityState {
   setActiveChat: (name: string) => void;
   createChat: () => void;
   sendMessage: (content: string) => void;
-
-  /* Settings */
-  apiUrl: string;
-  setApiUrl: (url: string) => void;
-  model: string;
-  setModel: (model: string) => void;
-  temperature: number;
-  setTemperature: (temp: number) => void;
 
   /* Promo */
   promoApplied: boolean;
@@ -95,22 +87,15 @@ export const useInfinityStore = create<InfinityState>()(
         });
       },
       sendMessage: (content) => {
-        const { chats, activeChat, model } = get();
+        const { chats, activeChat } = get();
         const messages = [...(chats[activeChat] || [])];
         messages.push({ role: "user", content });
         messages.push({
           role: "assistant",
-          content: `Thank you for your message. As Vixon AI (model: ${model}), I'm currently running in demo mode. Your prompt was: "${content}"`,
+          content: `Thank you for your message. As Vixon, I'm currently running in demo mode. Your prompt was: "${content}"`,
         });
         set({ chats: { ...chats, [activeChat]: messages } });
       },
-
-      apiUrl: "http://localhost:8000/v1",
-      setApiUrl: (apiUrl) => set({ apiUrl }),
-      model: "DeepSeek-coder-7B",
-      setModel: (model) => set({ model }),
-      temperature: 0.7,
-      setTemperature: (temperature) => set({ temperature }),
 
       promoApplied: false,
       applyPromo: (code) =>
@@ -130,9 +115,6 @@ export const useInfinityStore = create<InfinityState>()(
         theme: state.theme,
         language: state.language,
         savedLinks: state.savedLinks,
-        apiUrl: state.apiUrl,
-        model: state.model,
-        temperature: state.temperature,
       }),
     }
   )

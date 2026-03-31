@@ -34,7 +34,6 @@ const Sidebar = () => {
 
   return (
     <>
-      {/* Mobile overlay backdrop */}
       {isMobile && (
         <div
           className="fixed inset-0 z-40 bg-black/60 backdrop-blur-sm"
@@ -50,13 +49,15 @@ const Sidebar = () => {
             : `relative ${isRTL ? "border-l" : "border-r"}`
         }`}
       >
-        {/* Header */}
+        {/* Header — Vixon branding */}
         <div className="flex items-center justify-between px-5 pt-6 pb-2">
           <div>
             <h1 className="text-xl font-extrabold tracking-tight">
-              ♾️ <span className="text-primary">Infinity</span>
+              ♾️ <span className="text-primary">Vixon</span>
             </h1>
-            <p className="mt-1 text-xs text-muted-foreground">{t("sidebar.poweredBy")}</p>
+            <p className="mt-0.5 text-[0.6rem] font-light text-muted-foreground tracking-wide">
+              {t("sidebar.developedBy")}
+            </p>
           </div>
           {isMobile && (
             <button onClick={() => setSidebarOpen(false)} className="text-muted-foreground hover:text-foreground">
