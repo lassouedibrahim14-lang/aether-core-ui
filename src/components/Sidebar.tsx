@@ -2,7 +2,7 @@ import { useInfinityStore } from "@/store/agnes-store";
 import { useTranslation } from "@/hooks/use-translation";
 import { useIsMobile } from "@/hooks/use-mobile";
 import {
-  Plus, Settings, CreditCard, Diamond, HelpCircle, MessageSquare, BookOpen, HardDrive, X,
+  Plus, Settings, CreditCard, Diamond, HelpCircle, MessageSquare, BookOpen, HardDrive, X, ImagePlus,
 } from "lucide-react";
 
 const Sidebar = () => {
@@ -14,6 +14,7 @@ const Sidebar = () => {
   const navItems = [
     { key: "settings" as const, icon: Settings, label: t("sidebar.settings") },
     { key: "pricing" as const, icon: CreditCard, label: t("sidebar.pricing") },
+    { key: "ai-images" as const, icon: ImagePlus, label: t("sidebar.aiImages") },
     { key: "memory" as const, icon: HardDrive, label: t("sidebar.memory") },
     { key: "notebook" as const, icon: BookOpen, label: t("sidebar.notebook") },
     { key: "feedback" as const, icon: MessageSquare, label: t("sidebar.feedback") },

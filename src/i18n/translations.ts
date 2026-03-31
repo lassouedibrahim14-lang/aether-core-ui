@@ -13,6 +13,7 @@ export const translations: Record<Language, Record<string, string>> = {
     "sidebar.notebook": "Notebook LM",
     "sidebar.feedback": "Feedback",
     "sidebar.help": "Help",
+    "sidebar.aiImages": "AI Images",
     "sidebar.developedBy": "developed by Ibrahim",
 
     "chat.welcome": "Welcome to Vixon",
@@ -96,6 +97,12 @@ export const translations: Record<Language, Record<string, string>> = {
     "auth.googleSignIn": "Sign in with Google",
     "auth.noAccount": "Don't have an account?",
     "auth.hasAccount": "Already have an account?",
+
+    "aiImages.title": "🎨  AI Image Studio",
+    "aiImages.createTitle": "Create with AI",
+    "aiImages.placeholder": "Describe the image you want to create…",
+    "aiImages.generating": "✨ Generating your image…",
+    "aiImages.empty": "Your generated images will appear here.",
   },
 
   ar: {
@@ -108,6 +115,7 @@ export const translations: Record<Language, Record<string, string>> = {
     "sidebar.notebook": "دفتر الملاحظات",
     "sidebar.feedback": "ملاحظات",
     "sidebar.help": "المساعدة",
+    "sidebar.aiImages": "صور AI",
     "sidebar.developedBy": "طوّره إبراهيم",
 
     "chat.welcome": "مرحبًا بك في Vixon",
@@ -191,6 +199,12 @@ export const translations: Record<Language, Record<string, string>> = {
     "auth.googleSignIn": "تسجيل الدخول بـ Google",
     "auth.noAccount": "ليس لديك حساب؟",
     "auth.hasAccount": "لديك حساب بالفعل؟",
+
+    "aiImages.title": "🎨  استوديو صور AI",
+    "aiImages.createTitle": "أنشئ بالذكاء الاصطناعي",
+    "aiImages.placeholder": "صف الصورة التي تريد إنشاءها…",
+    "aiImages.generating": "✨ جارٍ إنشاء صورتك…",
+    "aiImages.empty": "ستظهر صورك المُنشأة هنا.",
   },
 
   fr: {
@@ -203,6 +217,7 @@ export const translations: Record<Language, Record<string, string>> = {
     "sidebar.notebook": "Cahier LM",
     "sidebar.feedback": "Commentaires",
     "sidebar.help": "Aide",
+    "sidebar.aiImages": "Images AI",
     "sidebar.developedBy": "développé par Ibrahim",
 
     "chat.welcome": "Bienvenue sur Vixon",
@@ -286,6 +301,12 @@ export const translations: Record<Language, Record<string, string>> = {
     "auth.googleSignIn": "Se connecter avec Google",
     "auth.noAccount": "Pas de compte ?",
     "auth.hasAccount": "Déjà un compte ?",
+
+    "aiImages.title": "🎨  Studio d'images AI",
+    "aiImages.createTitle": "Créer avec l'IA",
+    "aiImages.placeholder": "Décrivez l'image que vous souhaitez créer…",
+    "aiImages.generating": "✨ Génération de votre image…",
+    "aiImages.empty": "Vos images générées apparaîtront ici.",
   },
 
   es: {
@@ -298,6 +319,7 @@ export const translations: Record<Language, Record<string, string>> = {
     "sidebar.notebook": "Cuaderno LM",
     "sidebar.feedback": "Comentarios",
     "sidebar.help": "Ayuda",
+    "sidebar.aiImages": "Imágenes AI",
     "sidebar.developedBy": "desarrollado por Ibrahim",
 
     "chat.welcome": "Bienvenido a Vixon",
@@ -381,5 +403,11 @@ export const translations: Record<Language, Record<string, string>> = {
     "auth.googleSignIn": "Iniciar sesión con Google",
     "auth.noAccount": "¿No tienes cuenta?",
     "auth.hasAccount": "¿Ya tienes cuenta?",
+
+    "aiImages.title": "🎨  Estudio de imágenes AI",
+    "aiImages.createTitle": "Crear con IA",
+    "aiImages.placeholder": "Describe la imagen que quieres crear…",
+    "aiImages.generating": "✨ Generando tu imagen…",
+    "aiImages.empty": "Tus imágenes generadas aparecerán aquí.",
   },
 };
