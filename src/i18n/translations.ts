@@ -319,6 +319,7 @@ export const translations: Record<Language, Record<string, string>> = {
     "sidebar.notebook": "Cuaderno LM",
     "sidebar.feedback": "Comentarios",
     "sidebar.help": "Ayuda",
+    "sidebar.aiImages": "Imágenes AI",
     "sidebar.developedBy": "desarrollado por Ibrahim",
 
     "chat.welcome": "Bienvenido a Vixon",
