@@ -15,18 +15,6 @@ interface Tier {
 
 const tiers: Tier[] = [
   {
-    name: "Vixon Free",
-    price: 100,
-    discPrice: 50,
-    features: [
-      "Vixon-Tiny-7B model",
-      "Basic context window",
-      "50 AI requests / day",
-      "Community support",
-    ],
-    featured: false,
-  },
-  {
     name: "Vixon Pro",
     subtitle: "The Master Tier",
     price: 1500,
