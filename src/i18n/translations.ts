@@ -97,6 +97,12 @@ export const translations: Record<Language, Record<string, string>> = {
     "auth.googleSignIn": "Sign in with Google",
     "auth.noAccount": "Don't have an account?",
     "auth.hasAccount": "Already have an account?",
+
+    "aiImages.title": "🎨  AI Image Studio",
+    "aiImages.createTitle": "Create with AI",
+    "aiImages.placeholder": "Describe the image you want to create…",
+    "aiImages.generating": "✨ Generating your image…",
+    "aiImages.empty": "Your generated images will appear here.",
   },
 
   ar: {
