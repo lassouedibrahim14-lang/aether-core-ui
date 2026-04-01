@@ -1,0 +1,26 @@
+async function handleSendMessage(userInput) {
+ 
+  const API_URL = "https://api-inference.huggingface.co/models/Ibrahim14-123/Aether-OS/vixon_model";
+  
+  try {
+    const response = await fetch(API_URL, {
+      method: "POST",
+      headers: {
+        "Authorization": "Bearer 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",
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify({ inputs: userInput }),
+    });
+
+    const data = await response.json();
+    
+
+    const vixonResponse = data[0].generated_text;
+    
+
+    setMessages([...messages, { role: "assistant", content: vixonResponse }]);
+    
+  } catch (error) {
+    console.error("Error calling Vixon AI:", error);
+  }
+}
