@@ -33,11 +33,6 @@ interface InfinityState {
   removeLink: (index: number) => void;
 }
 
-export const ULTRA_FREE_EMAILS = [
-  "lassouedibrahim14@gmail.com",
-  "hammabosch@gmail.com",
-];
-
 const HF_TOKEN = import.meta.env.VITE_HUGGINGFACE_ACCESS_TOKEN;
 
 export const useInfinityStore = create<InfinityState>()(
@@ -53,10 +48,8 @@ export const useInfinityStore = create<InfinityState>()(
         const root = document.documentElement;
         if (theme === "dark") {
           root.classList.add("dark");
-          root.classList.remove("light");
         } else {
           root.classList.remove("dark");
-          root.classList.add("light");
         }
         set({ theme });
       },
@@ -78,25 +71,25 @@ export const useInfinityStore = create<InfinityState>()(
           isTyping: true,
         }));
         try {
-          if (!HF_TOKEN) throw new Error("API Token missing");
           const response = await fetch(
-            "https://api-inference.huggingface.co/models/Ibrahim14-123/Aether-OS",
+            "https://api-inference.huggingface.co/models/mistralai/Mistral-7B-Instruct-v0.2",
             {
               headers: { Authorization: `Bearer ${HF_TOKEN}`, "Content-Type": "application/json" },
               method: "POST",
-              body: JSON.stringify({ inputs: content }),
+              body: JSON.stringify({ inputs: `[INST] You are Vixon, the AI of Aether OS. Answer in the same language as the user: ${content} [/INST]` }),
             }
           );
-          if (!response.ok) throw new Error(`HTTP error: ${response.status}`);
           const data = await response.json();
-          const vixonReply = Array.isArray(data) ? data[0]?.generated_text : data.generated_text;
+          const reply = Array.isArray(data) ? data[0]?.generated_text : data.generated_text;
+          const cleanReply = reply?.split('[/INST]')?.pop()?.trim() || "System Error";
+          
           set((state) => ({
-            chats: { ...state.chats, [activeChat]: [...(state.chats[activeChat] || []), { role: "assistant", content: vixonReply || "No response." }] },
+            chats: { ...state.chats, [activeChat]: [...(state.chats[activeChat] || []), { role: "assistant", content: cleanReply }] },
             isTyping: false,
           }));
         } catch (error) {
           set((state) => ({
-            chats: { ...state.chats, [activeChat]: [...(state.chats[activeChat] || []), { role: "assistant", content: "System error.", isError: true }] },
+            chats: { ...state.chats, [activeChat]: [...(state.chats[activeChat] || []), { role: "assistant", content: "Connection Error", isError: true }] },
             isTyping: false,
           }));
         }
@@ -104,28 +97,23 @@ export const useInfinityStore = create<InfinityState>()(
       lastGeneratedImageUrl: null,
       generatingImage: false,
       generateImage: async (prompt) => {
-        const { lastGeneratedImageUrl } = get();
-        if (lastGeneratedImageUrl && lastGeneratedImageUrl.startsWith('blob:')) {
-          URL.revokeObjectURL(lastGeneratedImageUrl);
-        }
         set({ generatingImage: true, lastGeneratedImageUrl: null });
         try {
-          if (!HF_TOKEN) throw new Error("API Token missing");
           const response = await fetch(
-            "https://api-inference.huggingface.co/models/google/gemini-3-flash-image",
+            "https://api-inference.huggingface.co/models/stabilityai/stable-diffusion-xl-base-1.0",
             {
               headers: { Authorization: `Bearer ${HF_TOKEN}`, "Content-Type": "application/json" },
               method: "POST",
               body: JSON.stringify({ inputs: prompt }),
             }
           );
-          if (!response.ok) throw new Error("Model failed.");
+          if (!response.ok) throw new Error("Image Generation Failed");
           const blob = await response.blob();
           const imageUrl = URL.createObjectURL(blob);
           set({ lastGeneratedImageUrl: imageUrl, generatingImage: false });
           return imageUrl;
         } catch (error) {
-          set({ lastGeneratedImageUrl: "https://vixon.ai/assets/error-image.png", generatingImage: false });
+          set({ generatingImage: false });
           return null;
         }
       },
